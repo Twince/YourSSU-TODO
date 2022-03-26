@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
+  <div @mousemove="mouseMove" class="container">
     <p class="main_title">Vanilla Js DRAG & DROP TODO</p>
     <div class="todo_list_box">
       <div class="none box-detail">
         
         <div v-for="(item, index) in noneArr" v-bind:key="item">
-          <div class="item" draggable="true">{{index}}, {{ noneArr[index] }}</div>
+          <div ref="itemBlock" v-on:drag="dragtest(index)" class="item" draggable="true">{{index}}, {{ noneArr[index] }}</div>
         </div>
         
         <div class="add-item">
@@ -14,7 +14,7 @@
         </div>
         
       </div>
-      <div class="ready box-detail">
+      <div ref="itemBlock" v-on:drag="dragtest(index)" class="ready box-detail">
 
       </div>
       <div class="ongoing box-detail">
@@ -28,7 +28,11 @@
 </template>
 
 <script>
+
 export default {
+  setup(){
+ 
+  },
   data() {
     return{
       noneArr: [],
@@ -39,12 +43,20 @@ export default {
     }
   },
   methods:{
+    mouseMove(event) {
+      console.log(event.clientX, event.clientY);
+    },
     addTodo(rawInput){
       // rawInput !== "" ? console.log(rawInput) : alert("ㅁㄴㅇㄻㄴㅇ")
       if(rawInput !== "") {
         this.noneArr.push(rawInput)
         console.log(this.noneArr);
       }
+    },
+    dragtest(index){
+      const el = this.$refs.itemBlock[index].getBoundingClientRect()
+      console.log(index);
+      console.log(el);
     }
 
   },
